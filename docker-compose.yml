@@ -76,7 +76,7 @@ services:
       PUBSUB_EMULATOR_HOST: pubsub:8085
       PUBSUB_SUBCRIPTION_ID: scan-sub
       ELASTICSEARCH_URL: "http://elasticsearch:9200"
-      LOG_ENABLED: "false"
+      LOG_ENABLED: "true"
     build:
       context: .
       dockerfile: ./cmd/indexer/Dockerfile
