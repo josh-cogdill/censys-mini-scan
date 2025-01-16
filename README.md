@@ -56,11 +56,11 @@ The pubsub project, pubsub subscription, and ES index name are all specified as 
 1. Enable Logger - I set up a custom logger that can be enabled/disabled from a docker environment variable `LOG_ENABLED`. This is default on. The logger will output to the console when the Consumer and Indexer have started running, as well as the messages that it is processing.
 2. Query ElasticSearch - Query the DB to verify documents are being inserted into the specified Index, as well as verifying the Documents are stored in the format desired. Here are a few example command line queries:
 
-> curl -X GET `"http://localhost:9200/scan_data/\_count"`
+> `curl -X GET "http://localhost:9200/scan_data/\_count"`
 > 
-> curl -X GET `"http://localhost:9200/scan_data/\_search?size=10&pretty"`
+> `curl -X GET "http://localhost:9200/scan_data/\_search?size=10&pretty"`
 > 
-> curl -X GET `"http://localhost:9200/scan_data/\_search?q=service:HTTP&pretty=true"`
+> `curl -X GET "http://localhost:9200/scan_data/\_search?q=service:HTTP&pretty=true"`
 
 ### Improvements
 
