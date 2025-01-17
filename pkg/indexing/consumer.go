@@ -46,6 +46,14 @@ func (c *Consumer) Consume(ctx context.Context, msgChan chan []byte) {
 	}
 }
 
+type ESData struct {
+	Ip          string      `json:"ip"`
+	Port        uint32      `json:"port"`
+	Service     string      `json:"service"`
+	Timestamp   int64       `json:"timestamp"`
+	Response	string		`json:"response"`
+}
+
 func GetESData(m *pubsub.Message) ([]byte, error) {
 	var esData ESData
 
@@ -63,14 +71,6 @@ func GetESData(m *pubsub.Message) ([]byte, error) {
 		return nil, err
 	}
 	return serialized, nil
-}
-
-type ESData struct {
-	Ip          string      `json:"ip"`
-	Port        uint32      `json:"port"`
-	Service     string      `json:"service"`
-	Timestamp   int64       `json:"timestamp"`
-	Response	string		`json:"response"`
 }
 
 // Custom unmarshal to handle data versions V1 and V2
