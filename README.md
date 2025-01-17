@@ -35,14 +35,14 @@ censys-mini-scan-indexer-1          | 2025/01/17 00:55:31 Starting Consumer.
 The Indexer is made up of two primary services:
 
 1. Consumer
-   a. Reads from the pubsub topic using the specified subscription
-   b. Deserializes the data into the required format
-   c. Re-serializes to prep for ES insert
-   d. Writes to a shared channel for the ESIndexer
+   - Reads from the pubsub topic using the specified subscription
+   - Deserializes the data into the required format
+   - Re-serializes to prep for ES insert
+   - Writes to a shared channel for the ESIndexer
 
-2. ESIndexer
-   a. Reads from the shared channel
-   b. Inserts the document into an ElasticSearch Index. Attempts 5 retries if there are any errors returned from the elasticsearch API.
+3. ESIndexer
+   - Reads from the shared channel
+   - Inserts the document into an ElasticSearch Index. Attempts 5 retries if there are any errors returned from the elasticsearch API.
 
 ### Manual Testing
 
