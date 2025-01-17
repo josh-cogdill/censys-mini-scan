@@ -2,7 +2,7 @@
 
 ### Running the Indexer
 
-The `docker-compose.yml` file sets up the data processing pipeline by spinning up an instance of ElasticSearch for the data store, and an Indexer service. The Indexer service will wait for the subscription to be set up successfully, and for ElasticSearch to be running healthy. It also sets up a toy example of a scanner provided by censys. It spins up a Google Pub/Sub emulator, creates a topic and subscription, and publishes scan results to the topic.
+The `docker-compose.yml` file sets up the data processing pipeline by spinning up an instance of ElasticSearch for the data store, and an Indexer service. The Indexer service will wait for the subscription to be set up successfully, and for ElasticSearch to be healthy. It also sets up a toy example of a scanner provided by censys. It spins up a Google Pub/Sub emulator, creates a topic and subscription, and publishes scan results to the topic.
 
 Environment Variables:
 
