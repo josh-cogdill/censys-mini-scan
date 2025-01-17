@@ -26,8 +26,8 @@ docker compose up
 The Indexer is the last service to start up. You will know it's running when you see the following:
 
 ```
-censys-mini-scan-indexer-1          | 2025/01/17 00:55:31 Starting Indexer...
-censys-mini-scan-indexer-1          | 2025/01/17 00:55:31 Starting Consumer...
+censys-mini-scan-indexer-1          | 2025/01/17 00:55:31 Starting Indexer.
+censys-mini-scan-indexer-1          | 2025/01/17 00:55:31 Starting Consumer.
 ```
 
 ### Behavior

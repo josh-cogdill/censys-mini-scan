@@ -58,11 +58,11 @@ func main() {
 	// Channel to synchronize our message processing
 	msgChan := make(chan []byte)
 
-	log.Println("Starting Indexer...")
+	log.Println("Starting Indexer.")
 	// Start the indexer - reading off the msgChan
 	go indexer.Process(msgChan, config.IndexName, ctx)
 
-	log.Println("Starting Consumer...")
+	log.Println("Starting Consumer.")
 	// Start the consumer - writing to the msgChan
 	// Consume blocks until ctx is done, or the service returns a non-retryable error
 	consumer.Consume(ctx, msgChan)
