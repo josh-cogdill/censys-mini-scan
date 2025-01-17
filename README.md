@@ -18,7 +18,10 @@ Environment Variables:
 With the exception of DEBUG_LOG_ENABLED, all of these environment variables are necessary to run the indexer.
 
 Start All Services:
-`docker compose up`
+
+```
+docker compose up
+```
 
 The Indexer is the last service to start up. You will know it's running when you see the following:
 
@@ -48,15 +51,14 @@ The Indexer is made up of two primary services:
 
 Here are a few example command line queries with sample output:
 
-`curl -X GET "http://localhost:9200/scan_data/_count"`
-
 ```
+1. `curl -X GET "http://localhost:9200/scan_data/_count"`
+
 {"count":4046,"_shards":{"total":1,"successful":1,"skipped":0,"failed":0}}
 ```
 
-`curl -X GET "http://localhost:9200/scan_data/_search?size=10&pretty"`
-
 ```
+2. `curl -X GET "http://localhost:9200/scan_data/_search?size=10&pretty"`
 ...
 {
 "_index" : "scan_data",
@@ -97,9 +99,8 @@ Here are a few example command line queries with sample output:
 ...
 ```
 
-`curl -X GET "http://localhost:9200/scan_data/_search?q=service:HTTP&pretty=true"`
-
 ```
+3. `curl -X GET "http://localhost:9200/scan_data/_search?q=service:HTTP&pretty=true"`
 ...
 {
 "_index" : "scan_data",
