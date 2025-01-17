@@ -2,35 +2,34 @@ package main
 
 import (
 	"context"
+	"errors"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"cloud.google.com/go/pubsub"
 	"github.com/censys/scan-takehome/pkg/indexing"
-	"github.com/censys/scan-takehome/pkg/logger"
 	elasticsearch "github.com/elastic/go-elasticsearch/v8"
 )
 
-var (
-	PROJECT_ID string
-	SUBSCRIPTION_ID string
-	INDEX_NAME string
-)
-
-func init() {
-	INDEX_NAME = os.Getenv("INDEX_NAME")
-	PROJECT_ID = os.Getenv("PUBSUB_PROJECT_ID")
-	SUBSCRIPTION_ID = os.Getenv("PUBSUB_SUBCRIPTION_ID")
+type Config struct {
+	IndexName string
+	ProjectId string
+	SubscriptionId string
 }
 
 func main() {	
-	pubsubClient, err := pubsub.NewClient(context.Background(), PROJECT_ID)
+	config, err := GetConfig()
+	if err != nil {
+		panic(err)
+	}
+	pubsubClient, err := pubsub.NewClient(context.Background(), config.ProjectId)
 	if err != nil {
 		panic(err)
 	}
 	defer pubsubClient.Close()
-	consumer := indexing.NewConsumer(pubsubClient, SUBSCRIPTION_ID)
+	consumer := indexing.NewConsumer(pubsubClient, config.SubscriptionId)
 
 	defaultESClient, err := elasticsearch.NewDefaultClient()
 	if err != nil {
@@ -40,7 +39,7 @@ func main() {
 	esClient := indexing.NewEsClient(defaultESClient)
 	indexer := indexing.NewIndexer(esClient)
 
-	err = indexer.CreateIndex(INDEX_NAME)
+	err = indexer.CreateIndex(config.IndexName)
 	if err != nil {
 		panic(err)
 	}
@@ -52,21 +51,42 @@ func main() {
 
 	go func() {
 		sig := <-sigChan
-		logger.Log("Received signal: %v\n", sig)
+		log.Printf("Received signal: %v\n", sig)
 		cancel()
 	}()
 
 	// Channel to synchronize our message processing
 	msgChan := make(chan []byte)
 
-	logger.Log("Starting Indexer...")
+	log.Println("Starting Indexer...")
 	// Start the indexer - reading off the msgChan
-	go indexer.Process(msgChan, INDEX_NAME, ctx)
+	go indexer.Process(msgChan, config.IndexName, ctx)
 
-	logger.Log("Starting Consumer...")
+	log.Println("Starting Consumer...")
 	// Start the consumer - writing to the msgChan
+	// Consume blocks until ctx is done, or the service returns a non-retryable error
 	consumer.Consume(ctx, msgChan)
 
-	logger.Log("Shutdown complete.")
+	log.Println("Shutdown complete.")
+}
+
+func GetConfig() (*Config, error) {
+	idxName := os.Getenv("INDEX_NAME")
+	if idxName == "" {
+		return nil, errors.New("Environment Variable INDEX_NAME needs to be set.")
+	}
+	projId := os.Getenv("PUBSUB_PROJECT_ID")
+	if projId == "" {
+		return nil, errors.New("Environment Variable PUBSUB_PROJECT_ID needs to be set.")
+	}
+	subId := os.Getenv("PUBSUB_SUBCRIPTION_ID")
+	if subId == "" {
+		return nil, errors.New("Environment Variable PUBSUB_SUBCRIPTION_ID needs to be set.")
+	}
+	return &Config{
+		IndexName: idxName,
+		ProjectId: projId,
+		SubscriptionId: subId,
+	}, nil
 }
 

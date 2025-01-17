@@ -4,8 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-
-	"github.com/censys/scan-takehome/pkg/logger"
+	"log"
 
 	"github.com/elastic/go-elasticsearch/v8/esapi"
 )
@@ -68,13 +67,13 @@ func (indexer *ESIndexer) Process(msgChan chan []byte, idxName string, ctx conte
 	for {
 		select {
 		case <- ctx.Done():
-			logger.Log("Context canceled: %v\n", ctx.Err())
+			log.Printf("Context canceled: %v\n", ctx.Err())
 			return
 		
 		case esData := <-msgChan:
 			err := indexer.ExecuteInsert(esData, idxName)
 			if err != nil {
-				logger.Log("Failed to insert data: %v\n Error: %v\n", esData, err)
+				log.Printf("Failed to insert data: %v\n Error: %v\n", esData, err)
 			}
 		}
 	}

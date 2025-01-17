@@ -20,7 +20,7 @@ func TestGetESData(t *testing.T) {
 	)
 	
 	t.Run("Valid Scan Data Version V1", func(t *testing.T) {
-		expectedDeserialized := &scanning.ServiceData{
+		expectedDeserialized := &ESData{
 			Ip: ip,
 			Port: port,
 			Service: service,
@@ -44,7 +44,7 @@ func TestGetESData(t *testing.T) {
 	})
 
 	t.Run("Valid Scan Data Version V2", func(t *testing.T) {
-		expectedDeserialized := &scanning.ServiceData{
+		expectedDeserialized := &ESData{
 			Ip: ip,
 			Port: port,
 			Service: service,
