@@ -20,6 +20,7 @@ func TestGetESData(t *testing.T) {
 	)
 	
 	t.Run("Valid Scan Data Version V1", func(t *testing.T) {
+		// Arrange
 		expectedDeserialized := &ESData{
 			Ip: ip,
 			Port: port,
@@ -37,13 +38,17 @@ func TestGetESData(t *testing.T) {
 		pubsubMsg := &pubsub.Message{
 			Data: pubsubData,
 		}
-
+		
+		// Act
 		esData, err := GetESData(pubsubMsg)
+
+		// Assert
 		assert.NoError(t, err)
 		assert.Equal(t, expectedSerialized, esData)
 	})
 
 	t.Run("Valid Scan Data Version V2", func(t *testing.T) {
+		// Arrange
 		expectedDeserialized := &ESData{
 			Ip: ip,
 			Port: port,
@@ -62,17 +67,24 @@ func TestGetESData(t *testing.T) {
 			Data: pubsubData,
 		}
 
+		// Act
 		esData, err := GetESData(pubsubMsg)
+
+		// Assert
 		assert.NoError(t, err)
 		assert.Equal(t, expectedSerialized, esData)
 	})
 
 	t.Run("Invalid json returns error", func(t *testing.T) {
+		// Arrange
 		msg := &pubsub.Message{
 			Data: []byte("invalid json"),
 		}
 
+		// Act
 		esData, err := GetESData(msg)
+
+		// Assert
 		assert.Error(t, err)
 		assert.Nil(t, esData)
 	})
