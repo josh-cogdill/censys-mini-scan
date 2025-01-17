@@ -52,13 +52,13 @@ The Indexer is made up of two primary services:
 Here are a few example command line queries with sample output:
 
 ```
-1. `curl -X GET "http://localhost:9200/scan_data/_count"`
+1. curl -X GET "http://localhost:9200/scan_data/_count"
 
 {"count":4046,"_shards":{"total":1,"successful":1,"skipped":0,"failed":0}}
 ```
 
 ```
-2. `curl -X GET "http://localhost:9200/scan_data/_search?size=10&pretty"`
+2. curl -X GET "http://localhost:9200/scan_data/_search?size=10&pretty"
 ...
 {
 "_index" : "scan_data",
@@ -100,7 +100,7 @@ Here are a few example command line queries with sample output:
 ```
 
 ```
-3. `curl -X GET "http://localhost:9200/scan_data/_search?q=service:HTTP&pretty=true"`
+3. curl -X GET "http://localhost:9200/scan_data/_search?q=service:HTTP&pretty=true"
 ...
 {
 "_index" : "scan_data",
