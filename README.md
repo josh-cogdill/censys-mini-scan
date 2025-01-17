@@ -1,46 +1,8 @@
-# Mini-Scan
-
-Hello!
-
-As you've heard by now, Censys scans the internet at an incredible scale. Processing the results necessitates scaling horizontally across thousands of machines. One key aspect of our architecture is the use of distributed queues to pass data between machines.
-
----
-
-### Running the Scanner
-
-The `docker-compose.yml` file sets up a toy example of a scanner. It spins up a Google Pub/Sub emulator, creates a topic and subscription, and publishes scan results to the topic. It can be run via `docker compose up`.
-
-Your job is to build the data processing side. It should:
-
-1. Pull scan results from the subscription `scan-sub`.
-2. Maintain an up-to-date record of each unique `(ip, port, service)`. This should contain when the service was last scanned and a string containing the service's response.
-
-> **_NOTE_**
-> The scanner can publish data in two formats, shown below. In both of the following examples, the service response should be stored as: `"hello world"`.
->
-> ```javascript
-> {
->   // ...
->   "data_version": 1,
->   "data": {
->     "response_bytes_utf8": "aGVsbG8gd29ybGQ="
->   }
-> }
->
-> {
->   // ...
->   "data_version": 2,
->   "data": {
->     "response_str": "hello world"
->   }
-> }
-> ```
-
----
+# Mini-Scan-Indexer
 
 ### Running the Indexer
 
-The `docker-compose.yml` file sets up the data processing pipeline by spinning up an instance of ElasticSearch for the data store, and an Indexer service. The Indexer service will wait for the subscription to be set up successfully, and for ElasticSearch to be running healthy. It also sets up a toy example of a scanner. It spins up a Google Pub/Sub emulator, creates a topic and subscription, and publishes scan results to the topic.
+The `docker-compose.yml` file sets up the data processing pipeline by spinning up an instance of ElasticSearch for the data store, and an Indexer service. The Indexer service will wait for the subscription to be set up successfully, and for ElasticSearch to be running healthy. It also sets up a toy example of a scanner provided by censys. It spins up a Google Pub/Sub emulator, creates a topic and subscription, and publishes scan results to the topic.
 
 Environment Variables:
 
